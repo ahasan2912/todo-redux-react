@@ -6,9 +6,10 @@ const TodoCard = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const todos = useSelector((state) => state.todolist);
     const dispatch = useDispatch();
+    const [editId, setEditId] = useState('');
 
     const handldeDelete = (id) => {
-        dispatch(deleteItem(id))
+        dispatch(deleteItem(id));
     }
 
     const handleUpdate = (e) => {
@@ -16,13 +17,15 @@ const TodoCard = () => {
         const name = e.target.name.value;
         const date = e.target.date.value;
         const lrnType = e.target.type.value;
-        const id = crypto.randomUUID();
+        const id = editId;
         const updatedInfo = { id, name, date, lrnType };
         dispatch(editItem(updatedInfo));
+        setModalOpen(false);
     }
 
-    const openModal = () => {
+    const openModal = (id) => {
         setModalOpen(true);
+        setEditId(id);
     }
 
     const closeModal = () => {
@@ -43,11 +46,12 @@ const TodoCard = () => {
                             {item.lrnType}
                         </span>
                         <button onClick={() => handldeDelete(item.id)} className='inline-block mt-2 bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-medium w-fit cursor-pointer'>Delete</button>
-                        <button onClick={() => openModal(item)} className='inline-block mt-2 bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-medium w-fit cursor-pointer'>Update</button>
+                        <button onClick={() => openModal(item.id)} className='inline-block mt-2 bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm font-medium w-fit cursor-pointer'>Update</button>
                     </div>
                     {/* Modal */}
                     {modalOpen && (
                         <div className="fixed inset-0 bg-gray-100 pt-20 z-50">
+                            <h1 className='text-3xl font-bold text-center mb-6'>Update Todo Application</h1>
                             <form
                                 onSubmit={handleUpdate}
                                 className="max-w-md mx-auto bg-white p-5 rounded-xl shadow-md space-y-4"

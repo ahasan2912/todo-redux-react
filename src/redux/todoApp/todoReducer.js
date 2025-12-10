@@ -8,7 +8,6 @@ const initialState = {
 
 
 export const todoReducer = (state = initialState, action) => {
-    console.log(action.payload)
     switch (action.type) {
         case ADDITEM:
             return {
@@ -24,8 +23,10 @@ export const todoReducer = (state = initialState, action) => {
             return {
                 ...state,
                 todolist: state.todolist.map((data) =>
-                    data.id === action.payload.id ? { ...data, ...action.payload } : data
-                )
+                    data.id === action.payload.id
+                        ? { ...data, ...action.payload }
+                        : data
+                ),
             };
         default:
             return state;
